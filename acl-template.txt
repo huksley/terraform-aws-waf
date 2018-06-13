@@ -1,0 +1,10 @@
+# ACL which matches if there is #NUM# IP in ip_list
+resource "aws_waf_web_acl" "waf_acl#NUM#" {
+  count       = "${var.enabled && #ISREG#var.regional && length(var.ip_list) == #NUM# ? 1 : 0}"
+  depends_on  = ["aws_waf_ipset.ipset", "aws_waf_rule.waf_rule"]
+  name        = "${var.prefix}-waf-acl"
+  metric_name = "${replace(var.prefix, "-", "")}WAFAcl"
+
+  default_action {
+    type = "${var.default_action}"
+  }
